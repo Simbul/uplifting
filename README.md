@@ -36,7 +36,7 @@ Uplifting is based on 3 components:
  * The **elevator** responds to events (such as pressing the button for a floor) and moves the elevator
  * The **engine** runs the script against the elevator and computes the score at the end
 
-A way of thinking about is is *script vs. elevator*: you can write a script to make life harder for the elevator, or you can write an elevator code to better adapt to a script. The engine allows interaction between the two and keeps track of what's going on at any given time.
+A way of thinking about it is *script vs. elevator*: you can write a script to make life harder for the elevator, or you can write an elevator code to better adapt to a script. The engine allows interaction between the two and keeps track of what's going on at any given time.
 
 ## Disclaimer
 
