@@ -1,7 +1,34 @@
-require_relative 'sample_elevator'
-require_relative 'dude'
+#!/usr/bin/env ruby
 
-e = SampleElevator.new('foo', 0.5, 10, 10)
+require 'optparse'
+require 'i18n'
+require 'active_support/all'
+
+require_relative 'dude'
+require_relative 'elevator'
+
+options = {}
+optparse = OptionParser.new do |opts|
+  opts.banner = "Usage: master.rb elevator_file"
+end
+optparse.parse!
+
+if ARGV.empty?
+  puts optparse
+  exit(-1)
+end
+
+elevator_source = ARGV[0]
+require_relative elevator_source
+elevator_class = elevator_source.sub('.rb', '').classify.constantize
+
+unless elevator_class.superclass == Elevator
+  puts "Class #{elevator_class} in #{elevator_source} should be a subclass of Elevator"
+  puts optparse
+  exit(-1)
+end
+
+e = elevator_class.new('foo', 0.5, 10, 10)
 elevators = [e]
 
 script = {
