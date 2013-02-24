@@ -1,6 +1,6 @@
 require 'faker'
 
-class Dude
+class Person
   class InvalidAction < RuntimeError; end
 
   attr_reader :name, :current_floor, :destination_floor, :spawned_at, :elevator, :status

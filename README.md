@@ -2,7 +2,7 @@
 
 Uplifting is an elevator simulator.
 
-You can write your own script to control the elevators and move all the dudes to their floor as quick as possible.
+You can write your own script to control the elevators and move all the people to their floor as quick as possible.
 
 ## Installation
 

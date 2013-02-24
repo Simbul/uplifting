@@ -14,15 +14,15 @@ module Script
 
   SCRIPT = {
     2 => [
-      [:spawn_dude, 2, 4],
-      [:spawn_dude, 2, 4],
+      [:spawn_person, 2, 4],
+      [:spawn_person, 2, 4],
     ],
     4 => [
-      [:spawn_dude, 1, 2],
-      [:spawn_dude, 1, 10],
+      [:spawn_person, 1, 2],
+      [:spawn_person, 1, 10],
     ],
     5 => [
-      [:spawn_dude, 4, 0],
+      [:spawn_person, 4, 0],
     ],
   }
 

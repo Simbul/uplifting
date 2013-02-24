@@ -4,7 +4,7 @@ require 'optparse'
 require 'i18n'
 require 'active_support/all'
 
-require_relative 'dude'
+require_relative 'person'
 require_relative 'elevator'
 
 options = {}
@@ -31,7 +31,7 @@ end
 script_source = ARGV[1]
 require_relative script_source
 
-dudes = []
+people = []
 duration = Script::SIMULATION[:ticks]
 elevators = Script::ELEVATORS.map { |name, params| elevator_class.new(name, params[:ticks_per_floor], params[:capacity], params[:floors]) }
 
@@ -43,17 +43,17 @@ duration.times do |time|
   if events = Script::SCRIPT[time]
     events.each do |event|
       case event.first
-      when :spawn_dude
+      when :spawn_person
         from_floor = event[1]
         to_floor = event[2]
-        puts "! spawned dude: #{from_floor} -> #{to_floor}"
-        dudes << Dude.new(from_floor, to_floor, time)
+        puts "! spawned person: #{from_floor} -> #{to_floor}"
+        people << Person.new(from_floor, to_floor, time)
       end
     end
   end
 
-  # Dudes actions
-  dudes.each{ |dude| dude.act(time, elevators) }
+  # People actions
+  people.each{ |person| person.act(time, elevators) }
 
   # Elevator commands
   elevators.each do |elevator|
@@ -63,9 +63,9 @@ duration.times do |time|
 end
 
 # Stats
-arrived = dudes.select{ |dude| dude.arrived? }
-travelling = dudes.select{ |dude| dude.on_elevator? }
-waiting = dudes.select{ |dude| dude.waiting? }
+arrived = people.select{ |person| person.arrived? }
+travelling = people.select{ |person| person.on_elevator? }
+waiting = people.select{ |person| person.waiting? }
 
 def singularize(num, word)
   (num == 1) ? "#{num} #{word.singularize}" : "#{num} #{word}"
@@ -73,7 +73,7 @@ end
 
 puts
 puts " Simulation finished ".center(70, '*')
-puts "#{singularize(arrived.count, 'dudes')} arrived at destination"
-puts "#{singularize(travelling.count, 'dudes')} still travelling"
-puts "#{singularize(waiting.count, 'dudes')} still waiting for an elevator"
+puts "#{singularize(arrived.count, 'people')} arrived at destination"
+puts "#{singularize(travelling.count, 'people')} still travelling"
+puts "#{singularize(waiting.count, 'people')} still waiting for an elevator"
 puts "Score: #{arrived.count * 2 - travelling.count - waiting.count * 2}"
