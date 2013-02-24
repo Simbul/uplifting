@@ -79,9 +79,13 @@ arrived = dudes.select{ |dude| dude.arrived? }
 travelling = dudes.select{ |dude| dude.on_elevator? }
 waiting = dudes.select{ |dude| dude.waiting? }
 
+def singularize(num, word)
+  (num == 1) ? "#{num} #{word.singularize}" : "#{num} #{word}"
+end
+
 puts
 puts "*** Simulation finished ***"
-puts "#{arrived.count} dudes arrived at destination"
-puts "#{travelling.count} dudes still travelling"
-puts "#{waiting.count} dudes still waiting for an elevator"
+puts "#{singularize(arrived.count, 'dudes')} arrived at destination"
+puts "#{singularize(travelling.count, 'dudes')} still travelling"
+puts "#{singularize(waiting.count, 'dudes')} still waiting for an elevator"
 puts "Score: #{arrived.count * 2 - travelling.count - waiting.count * 2}"
