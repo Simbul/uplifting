@@ -3,7 +3,7 @@ require 'faker'
 class Dude
   class InvalidAction < RuntimeError; end
 
-  attr_reader :name, :current_floor, :destination_floor, :spawned_at, :elevator
+  attr_reader :name, :current_floor, :destination_floor, :spawned_at, :elevator, :status
 
   def initialize(current_floor, destination_floor, spawned_at)
     @name = Faker::Name.name
@@ -11,11 +11,16 @@ class Dude
     @destination_floor = destination_floor
     @spawned_at = spawned_at
     @elevator = nil
+    @status = :idle
   end
 
   def act(time, elevators)
-    if waiting?
-      log "is on floor #{current_floor}, wants to go to floor #{destination_floor}"
+    if idle?
+      elevators.each{ |elevator| elevator.called_at(current_floor) }
+      @status = :waiting
+      log "called elevator on floor #{current_floor}"
+    elsif waiting?
+      log "is on floor #{current_floor}, waiting to go to floor #{destination_floor}"
       if available_elevator = find_available(elevators)
         board(available_elevator)
       end
@@ -32,6 +37,7 @@ class Dude
       elevator.add_passenger(self)
       @current_floor = nil
       @elevator = elevator
+      @status = :travelling
       log "boarded #{elevator.name}"
       select_floor(destination_floor)
     end
@@ -42,6 +48,7 @@ class Dude
     log "got off #{elevator.name}"
     @current_floor = elevator.position.to_i
     @elevator = nil
+    @status = :arrived
   end
 
   def select_floor(floor)
@@ -51,11 +58,15 @@ class Dude
   end
 
   def waiting?
-    elevator.nil?
+    status == :waiting && elevator.nil?
   end
 
   def on_elevator?
-    !elevator.nil?
+    status == :travelling && !elevator.nil?
+  end
+
+  def idle?
+    status == :idle
   end
 
 
