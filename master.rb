@@ -6,11 +6,8 @@ elevators = [e]
 
 script = {
   2 => [
-    # [:add_people, 5, 3],
-    [:spawn_dude, 5, 7],
-    [:called_at, 5],
+    [:spawn_dude, 2, 4],
   ],
-  # 3 => [[:called_at, 4]],
 }
 
 queues = {}
@@ -27,17 +24,6 @@ end
   unless events.nil?
     events.each do |event|
       case event.first
-      when :called_at
-        puts "! called at #{event.last}"
-        elevators.each do |elevator|
-          elevator.called_at(event.last)
-        end
-      when :add_people
-        num = event[2]
-        floor = event[1]
-        puts "! #{num} people arrived at floor #{floor}"
-        queues[floor] ||= 0
-        queues[floor] += num
       when :spawn_dude
         from_floor = event[1]
         to_floor = event[2]

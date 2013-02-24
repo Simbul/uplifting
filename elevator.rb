@@ -17,6 +17,23 @@ class Elevator
     @passengers = []
   end
 
+  # Callback: this is called at every loop, before instructions are processed
+  def tick(time)
+    raise SubclassConcern
+  end
+
+  # Callback: the elevator was called at a given floor
+  def called_at(floor)
+    raise SubclassConcern
+  end
+
+  # Callback: a button inside the elevator was pressed to go to a given floor
+  def button_pressed(floor)
+    raise SubclassConcern
+  end
+
+  ### YOU ARE NOT ALLOWED TO SUBCLASS ANYTHING BELOW THIS LINE ###
+
   def go_up
     @instruction = [:go_up]
   end
@@ -27,18 +44,6 @@ class Elevator
 
   def stop
     @instruction = [:stop]
-  end
-
-  def called_at(floor)
-    raise SubclassConcern
-  end
-
-  def tick(time)
-    raise SubclassConcern
-  end
-
-  def button_pressed(floor)
-    raise SubclassConcern
   end
 
   def process(time)
