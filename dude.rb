@@ -20,12 +20,12 @@ class Dude
       @status = :waiting
       log "called elevator on floor #{current_floor}"
     elsif waiting?
-      log "is on floor #{current_floor}, waiting to go to floor #{destination_floor}"
+      # log "is on floor #{current_floor}, waiting to go to floor #{destination_floor}"
       if available_elevator = find_available(elevators)
         board(available_elevator)
       end
     elsif on_elevator?
-      log "is on #{elevator.name}, going to floor #{destination_floor}"
+      # log "is on #{elevator.name}, going to floor #{destination_floor}"
       if elevator.position == @destination_floor && elevator.idle?
         get_off
       end

@@ -40,9 +40,6 @@ end
   # Elevato commands
   elevators.each do |elevator|
     elevator.process(time)
-    puts " #{elevator.name} #{elevator.status} at #{elevator.position} (#{elevator.instruction})"
-
-    puts "#{elevator.name} stopped at #{elevator.position.to_i}" if (elevator.position % 1 == 0) && elevator.idle?
   end
 
 end

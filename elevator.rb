@@ -2,6 +2,7 @@ class Elevator
   class CapacityExceeded < RuntimeError; end
   class InvalidPosition < RuntimeError; end
   class SubclassConcern < RuntimeError; end
+  class InvalidInstruction < RuntimeError; end
 
   attr_accessor :name, :speed, :capacity, :floors
   attr_reader :status, :instruction, :position, :passengers
@@ -55,14 +56,21 @@ class Elevator
         raise InvalidPosition, 'I wish I could fly away' unless @position < floors
         @status = :moving_up
         @position += speed
+        log "going up at #{position}"
       when :go_down
         raise InvalidPosition, "Everything's happy underground" unless @position > 0
         @status = :moving_down
         @position -= speed
+        log "going down at #{position}"
       when :stop
         raise InvalidPosition, 'Cannot stop between floors' unless @position % 1 == 0
         @status = :idle
+        log "stopped at #{position.to_i}"
+      else
+        raise InvalidInstruction, @instruction
       end
+    else
+      log 'doing nothing'
     end
   end
 
@@ -85,6 +93,21 @@ class Elevator
 
   def can_be_boarded?
     has_room? && idle?
+  end
+
+
+  private
+
+  def log(message)
+    puts "   #{name} [#{direction_symbol}] #{message}"
+  end
+
+  def direction_symbol
+    case status
+      when :idle then '='
+      when :moving_up then '^'
+      when :moving_down then 'v'
+    end
   end
 
 end
