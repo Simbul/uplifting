@@ -69,6 +69,10 @@ class Dude
     status == :idle
   end
 
+  def arrived?
+    status == :arrived
+  end
+
 
   private
 
