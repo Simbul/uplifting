@@ -28,7 +28,7 @@ unless elevator_class.superclass == Elevator
   exit(-1)
 end
 
-e = elevator_class.new('foo', 0.5, 10, 10)
+e = elevator_class.new('foo', 2, 10, 10)
 elevators = [e]
 
 script = {

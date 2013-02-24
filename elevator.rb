@@ -4,15 +4,16 @@ class Elevator
   class SubclassConcern < RuntimeError; end
   class InvalidInstruction < RuntimeError; end
 
-  attr_accessor :name, :speed, :capacity, :floors
-  attr_reader :status, :instruction, :position, :passengers
+  attr_accessor :name, :ticks_per_floor, :capacity, :floors
+  attr_reader :status, :instruction, :position, :passengers, :speed
 
-  def initialize(name, speed, capacity, floors, position=0)
+  def initialize(name, ticks_per_floor, capacity, floors, position=0)
     @name = name
-    @speed = speed # floors per second
+    @ticks_per_floor = ticks_per_floor # how many ticks to travel 1 floor
+    @speed = Rational(1, ticks_per_floor)
     @capacity = capacity
     @floors = floors
-    @position = position # floors are the integers
+    @position = Rational(position) # floors are the integers
     @status = :idle
     @instructon = nil
     @passengers = []
@@ -56,16 +57,16 @@ class Elevator
         raise InvalidPosition, 'I wish I could fly away' unless @position < floors
         @status = :moving_up
         @position += speed
-        log "going up at #{position}"
+        log "going up at #{humanize(position)}"
       when :go_down
         raise InvalidPosition, "Everything's happy underground" unless @position > 0
         @status = :moving_down
         @position -= speed
-        log "going down at #{position}"
+        log "going down at #{humanize(position)}"
       when :stop
         raise InvalidPosition, 'Cannot stop between floors' unless @position % 1 == 0
         @status = :idle
-        log "stopped at #{position.to_i}"
+        log "stopped at #{humanize(position)}"
       else
         raise InvalidInstruction, @instruction
       end
@@ -108,6 +109,12 @@ class Elevator
       when :moving_up then '^'
       when :moving_down then 'v'
     end
+  end
+
+  def humanize(position)
+    integer_part = position.floor
+    rational_part = position - integer_part
+    (rational_part == 0) ? "#{integer_part}" : "#{integer_part} + #{rational_part}"
   end
 
 end
