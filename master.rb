@@ -20,7 +20,7 @@ def each_dude_in(queues, &block)
 end
 
 15.times do |time|
-  puts "=== #{time.to_s.rjust(3)}"
+  puts "============ #{time.to_s.rjust(3)} ============"
 
   # Running script
   events = script[time]

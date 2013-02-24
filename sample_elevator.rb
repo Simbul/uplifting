@@ -11,6 +11,11 @@ class SampleElevator < Elevator
     stop if position == @destination_floor
   end
 
+  def button_pressed(floor)
+    @destination_floor = floor
+    called_at(floor)
+  end
+
   def called_at(floor)
     if idle?
       @destination_floor = floor

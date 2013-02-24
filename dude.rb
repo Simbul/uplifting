@@ -1,6 +1,7 @@
 require 'faker'
 
 class Dude
+  class InvalidAction < RuntimeError; end
 
   attr_reader :name, :current_floor, :destination_floor, :spawned_at, :elevator
 
@@ -14,12 +15,12 @@ class Dude
 
   def act(time, elevators)
     if waiting?
-      puts "#{name} is on floor #{current_floor}, wants to go to floor #{destination_floor}"
+      log "is on floor #{current_floor}, wants to go to floor #{destination_floor}"
       if available_elevator = find_available(elevators)
         board(available_elevator)
       end
     elsif on_elevator?
-      puts "#{name} is on #{elevator.name}, going to floor #{destination_floor}"
+      log "is on #{elevator.name}, going to floor #{destination_floor}"
       if elevator.position == @destination_floor && elevator.idle?
         get_off
       end
@@ -31,15 +32,22 @@ class Dude
       elevator.add_passenger(self)
       @current_floor = nil
       @elevator = elevator
-      puts "#{name} boarded #{elevator.name}"
+      log "boarded #{elevator.name}"
+      select_floor(destination_floor)
     end
   end
 
   def get_off
     elevator.remove_passenger(self)
-    puts "#{name} got off #{elevator.name}"
+    log "got off #{elevator.name}"
     @current_floor = elevator.position.to_i
     @elevator = nil
+  end
+
+  def select_floor(floor)
+    raise InvalidAction, 'Can only select floor when on elevator' if elevator.nil?
+    elevator.button_pressed(floor)
+    log "pressed button #{floor}"
   end
 
   def waiting?
@@ -55,6 +63,10 @@ class Dude
 
   def find_available(elevators)
     elevators.find{ |elevator| elevator.position == current_floor && elevator.can_be_boarded? }
+  end
+
+  def log(message)
+    puts "#{name} #{message}"
   end
 
 end
