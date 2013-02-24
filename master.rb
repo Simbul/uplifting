@@ -34,13 +34,14 @@ require_relative script_source
 people = []
 duration = Script::SIMULATION[:ticks]
 elevators = Script::ELEVATORS.map { |name, params| elevator_class.new(name, params[:ticks_per_floor], params[:capacity], params[:floors]) }
+script = Script::SCRIPT[:events] if Script::SCRIPT[:type] == :declarative
 
 duration.times do |time|
 
   puts " #{time.to_s.rjust(duration.to_s.length)} ".center(70, '=')
 
   # Running script
-  if events = Script::SCRIPT[time]
+  if events = script[time]
     events.each do |event|
       case event.first
       when :spawn_person

@@ -13,17 +13,20 @@ module Script
   }
 
   SCRIPT = {
-    2 => [
-      [:spawn_person, 2, 4],
-      [:spawn_person, 2, 4],
-    ],
-    4 => [
-      [:spawn_person, 1, 2],
-      [:spawn_person, 1, 10],
-    ],
-    5 => [
-      [:spawn_person, 4, 0],
-    ],
+    type: :declarative,
+    events: {
+      2 => [
+        [:spawn_person, 2, 4],
+        [:spawn_person, 2, 4],
+      ],
+      4 => [
+        [:spawn_person, 1, 2],
+        [:spawn_person, 1, 10],
+      ],
+      5 => [
+        [:spawn_person, 4, 0],
+      ],
+    }
   }
 
 end
