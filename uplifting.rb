@@ -5,6 +5,7 @@ $:.unshift File.join(File.dirname(__FILE__), 'lib')
 
 require 'optparse'
 require 'ostruct'
+require 'active_support/inflector'
 
 require 'engine'
 

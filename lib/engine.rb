@@ -1,5 +1,4 @@
-require 'i18n'
-require 'active_support/all'
+require 'active_support/inflector'
 
 require 'person'
 require 'elevator'
