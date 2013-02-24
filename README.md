@@ -15,7 +15,7 @@ $ bundle install
 ## Usage
 
 ```sh
-$ ./master.rb sample_elevator.rb sample_script.rb
+$ ./uplifting.rb elevators/sample_elevator.rb scripts/sample_script.rb
 ```
 
 This command will run a sample script against a sample elevator. You can pass in different files to run your own script against your own elevator.

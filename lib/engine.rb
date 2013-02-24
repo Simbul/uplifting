@@ -1,8 +1,8 @@
 require 'i18n'
 require 'active_support/all'
 
-require_relative 'person'
-require_relative 'elevator'
+require 'person'
+require 'elevator'
 
 class Engine
 
@@ -81,8 +81,8 @@ class Engine
   private
 
   def elevator_class(elevator_source)
-    require_relative elevator_source
-    klass = elevator_source.sub('.rb', '').classify.constantize
+    require elevator_source
+    klass = File.basename(elevator_source, '.rb').classify.constantize
     unless klass.superclass == Elevator
       raise ArgumentError, "Class #{klass} in #{elevator_source} should be a subclass of Elevator"
     end
@@ -90,7 +90,7 @@ class Engine
   end
 
   def script_module(script_source)
-    require_relative script_source
+    require script_source
     raise ArgumentError, "#{script_source} should contain a Script module" unless defined?(Script)
     Script
   end

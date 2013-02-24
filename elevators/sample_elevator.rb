@@ -1,4 +1,4 @@
-require_relative 'elevator'
+require 'elevator'
 
 class SampleElevator < Elevator
 

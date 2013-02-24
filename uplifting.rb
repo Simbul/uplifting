@@ -1,13 +1,16 @@
 #!/usr/bin/env ruby
 
+$:.unshift File.join(File.dirname(__FILE__))
+$:.unshift File.join(File.dirname(__FILE__), 'lib')
+
 require 'optparse'
 require 'ostruct'
 
-require_relative 'engine'
+require 'engine'
 
 options = OpenStruct.new
 optparse = OptionParser.new do |opts|
-  opts.banner = "Usage: master.rb elevator_file script_file"
+  opts.banner = "Usage: uplifting.rb elevator_file script_file"
 
   opts.on("--seed SEED", Integer, "Randomization seed") do |seed|
     options.seed = seed
