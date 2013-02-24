@@ -15,16 +15,18 @@ $ bundle install
 ## Usage
 
 ```sh
-$ ./master.rb sample_elevator.rb
+$ ./master.rb sample_elevator.rb sample_script.rb
 ```
 
-This command will run a very simple script against a sample elevator. You can pass in a different file to run the script against your own elevator.
+This command will run a sample script against a sample elevator. You can pass in different files to run your own script against your own elevator.
 
 ## Playing
 
 Write your own `Elevator` subclass in Ruby, along the lines of the code in `sample_elevator.rb`.
 
-Run your elevator code against the script and see how good your score is.
+Or, write your own `Script` module in Ruby, along the lines of the code in `sample_script.rb`.
+
+Then run the elevator code against the script and see how good the resulting score is.
 
 ## Concept
 
@@ -34,7 +36,7 @@ Uplifting is based on 3 components:
  * The **elevator** responds to events (such as pressing the button for a floor) and moves the elevator
  * The **engine** runs the script against the elevator and computes the score at the end
 
-A way of thinking about is is *script vs. elevator*: you can write a script to make life harder for the elevator, or you can write an elevator code to better adapt to a script.
+A way of thinking about is is *script vs. elevator*: you can write a script to make life harder for the elevator, or you can write an elevator code to better adapt to a script. The engine allows interaction between the two and keeps track of what's going on at any given time.
 
 ## Disclaimer
 

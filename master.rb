@@ -9,11 +9,11 @@ require_relative 'elevator'
 
 options = {}
 optparse = OptionParser.new do |opts|
-  opts.banner = "Usage: master.rb elevator_file"
+  opts.banner = "Usage: master.rb elevator_file script_file"
 end
 optparse.parse!
 
-if ARGV.empty?
+if ARGV.size < 2
   puts optparse
   exit(-1)
 end
@@ -28,31 +28,19 @@ unless elevator_class.superclass == Elevator
   exit(-1)
 end
 
-e = elevator_class.new('foo', 2, 10, 10)
-elevators = [e]
-
-script = {
-  2 => [
-    [:spawn_dude, 2, 4],
-    [:spawn_dude, 2, 4],
-  ],
-  4 => [
-    [:spawn_dude, 1, 2],
-    [:spawn_dude, 1, 10],
-  ],
-  5 => [
-    [:spawn_dude, 4, 0],
-  ],
-}
+script_source = ARGV[1]
+require_relative script_source
 
 dudes = []
+duration = Script::SIMULATION[:ticks]
+elevators = Script::ELEVATORS.map { |name, params| elevator_class.new(name, params[:ticks_per_floor], params[:capacity], params[:floors]) }
 
-15.times do |time|
+duration.times do |time|
 
-  puts "============ #{time.to_s.rjust(3)} ============"
+  puts " #{time.to_s.rjust(duration.to_s.length)} ".center(70, '=')
 
   # Running script
-  if events = script[time]
+  if events = Script::SCRIPT[time]
     events.each do |event|
       case event.first
       when :spawn_dude
@@ -84,7 +72,7 @@ def singularize(num, word)
 end
 
 puts
-puts "*** Simulation finished ***"
+puts " Simulation finished ".center(70, '*')
 puts "#{singularize(arrived.count, 'dudes')} arrived at destination"
 puts "#{singularize(travelling.count, 'dudes')} still travelling"
 puts "#{singularize(waiting.count, 'dudes')} still waiting for an elevator"
